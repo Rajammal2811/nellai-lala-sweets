@@ -5,6 +5,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { CategoryBar } from '../components/CategoryBar';
 import { ProductCard } from '../components/ProductCard';
 import { QRCodeModal } from '../components/QRCodeModal';
+import { SHOP_INFO } from '../data/initialData';
 import { 
   Search, 
   X, 
@@ -35,7 +36,7 @@ export const MenuPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [qrModalOpen, setQrModalOpen] = useState(false);
 
-  // Sync category from URL search params if present (e.g. ?category=milk-sweets)
+  // Sync category from URL search params if present (e.g. ?category=sweets)
   useEffect(() => {
     const catParam = searchParams.get('category');
     if (catParam) {
@@ -91,17 +92,17 @@ export const MenuPage: React.FC = () => {
           </h1>
 
           <p className="font-serif font-bold text-lg sm:text-xl text-stone-200">
-            Nellai Lala Sweets Menu • Vedasandur
+            {SHOP_INFO.name_en} • {SHOP_INFO.location_en}
           </p>
 
-          <p className="text-xs sm:text-sm text-stone-300 max-w-xl mx-auto">
-            Freshly prepared daily with 100% pure ghee, authentic recipes, and top quality ingredients.
+          <p className="text-xs sm:text-sm text-stone-300 max-w-xl mx-auto font-tamil">
+            6 பாரம்பரிய தயாரிப்பு பிரிவுகள் • நேரடி கடை இருப்பு & விலைப்பட்டியல்
           </p>
         </div>
       </section>
 
       {/* ======================================================== */}
-      {/* 2. STICKY CATEGORIES BAR                                  */}
+      {/* 2. STICKY CATEGORIES BAR (EXACT 6 CATEGORIES)            */}
       {/* ======================================================== */}
       <CategoryBar />
 
@@ -216,7 +217,7 @@ export const MenuPage: React.FC = () => {
         {isLoading ? (
           /* Loading Skeleton */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
+            {[1, 2, 3, 4, 5, 6].map(i => (
               <div key={i} className="bg-white rounded-2xl p-4 border border-stone-200 animate-pulse space-y-3">
                 <div className="aspect-[4/3] bg-stone-200 rounded-xl" />
                 <div className="h-5 bg-stone-200 rounded w-3/4" />
@@ -232,7 +233,7 @@ export const MenuPage: React.FC = () => {
               <Filter className="w-8 h-8" />
             </div>
             <h3 className="font-tamil font-bold text-xl text-burgundy-950">
-              பொருட்கள் எதுவும் கிடைக்கவில்லை
+              தயாரிப்புகள் எதுவும் கிடைக்கவில்லை
             </h3>
             <p className="text-stone-500 text-sm">
               No products found matching "{searchQuery}". Try searching for another item or clear your filters.
@@ -264,7 +265,7 @@ export const MenuPage: React.FC = () => {
             <span>நேரடி கடையில் கிடைக்கும் புத்தம் புதிய இனிப்புகள்</span>
           </div>
           <p className="text-xs text-stone-500">
-            This digital QR menu displays our live shop availability and per-kg prices. Visit Nellai Lala Sweets, Vedasandur to purchase fresh in person.
+            This digital QR menu displays our live shop availability and category prices. Visit Nellai Lala Sweets, Vedasandur for purchases.
           </p>
         </div>
 

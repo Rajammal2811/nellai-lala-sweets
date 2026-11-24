@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Logo } from './Logo';
 import { SHOP_INFO } from '../data/initialData';
-import { MapPin, Phone, Clock, QrCode, Shield, Heart } from 'lucide-react';
+import { MapPin, Phone, QrCode, Shield, Heart } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
@@ -10,71 +10,50 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-10 border-b border-gold-500/20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-10 border-b border-gold-500/20">
           
           {/* Brand Info */}
-          <div className="space-y-4">
-            <Logo size="md" showPlaceholderNotice={true} />
-            <p className="font-tamil text-gold-300 font-semibold text-sm">
-              {SHOP_INFO.name_ta}
+          <div className="space-y-3">
+            <Logo size="md" />
+            <div className="font-tamil text-gold-300 font-bold text-base">
+              ஸ்ரீ முருகன் விலாஸ் - {SHOP_INFO.name_ta}
+            </div>
+            <p className="text-xs text-stone-300 leading-relaxed font-serif">
+              {SHOP_INFO.tagline_en}
             </p>
-            <p className="text-xs text-stone-300 leading-relaxed">
+            <p className="font-tamil text-xs text-stone-400 leading-relaxed">
               {SHOP_INFO.tagline_ta}
-            </p>
-            <p className="text-xs text-stone-400 leading-relaxed font-serif italic">
-              "Authentic heritage recipes prepared daily with utmost purity and care."
             </p>
           </div>
 
-          {/* Contact & Address */}
+          {/* Verified Location & Phone Numbers */}
           <div className="space-y-3">
             <h4 className="text-gold-400 font-serif font-bold text-sm tracking-wider uppercase flex items-center gap-1.5 border-b border-gold-500/30 pb-1.5">
               <MapPin className="w-4 h-4" />
-              Shop Location / முகவரி
+              Location & Contact / முகவரி & தொடர்பு
             </h4>
-            <div className="text-xs space-y-2 text-stone-300">
-              <p className="font-tamil leading-relaxed">
-                {SHOP_INFO.address_ta}
-              </p>
-              <p className="text-stone-400 leading-relaxed">
-                {SHOP_INFO.address_en}
-              </p>
-              <a
-                href={SHOP_INFO.google_maps_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-gold-400 hover:text-gold-300 text-xs font-medium underline mt-1"
-              >
-                View on Google Maps →
-              </a>
-            </div>
-          </div>
-
-          {/* Timings & Contact */}
-          <div className="space-y-3">
-            <h4 className="text-gold-400 font-serif font-bold text-sm tracking-wider uppercase flex items-center gap-1.5 border-b border-gold-500/30 pb-1.5">
-              <Clock className="w-4 h-4" />
-              Timings & Phone / தொடர்பு
-            </h4>
-            <div className="text-xs space-y-2.5">
+            <div className="text-xs space-y-3 text-stone-300">
               <div className="flex items-start gap-2">
-                <Clock className="w-3.5 h-3.5 text-gold-400 mt-0.5 shrink-0" />
+                <MapPin className="w-3.5 h-3.5 text-gold-400 mt-0.5 shrink-0" />
                 <div>
-                  <p className="font-medium text-white">{SHOP_INFO.timing_en}</p>
-                  <p className="font-tamil text-stone-400">{SHOP_INFO.timing_ta}</p>
+                  <p className="font-tamil font-semibold text-white">{SHOP_INFO.location_ta}</p>
+                  <p className="text-stone-300">{SHOP_INFO.location_en}</p>
                 </div>
               </div>
+
               <div className="flex items-start gap-2">
                 <Phone className="w-3.5 h-3.5 text-gold-400 mt-0.5 shrink-0" />
-                <div>
-                  <a href={`tel:${SHOP_INFO.phone}`} className="text-white hover:text-gold-300 font-medium block">
-                    {SHOP_INFO.phone}
-                  </a>
-                  {SHOP_INFO.phone_secondary && (
-                    <a href={`tel:${SHOP_INFO.phone_secondary}`} className="text-stone-400 hover:text-gold-300 block">
+                <div className="space-y-0.5">
+                  <div className="text-stone-400 text-[11px]">Phone Inquiries:</div>
+                  <div className="flex flex-wrap gap-2 text-white font-mono font-bold text-sm">
+                    <a href={`tel:${SHOP_INFO.phone}`} className="hover:text-gold-300">
+                      {SHOP_INFO.phone}
+                    </a>
+                    <span>/</span>
+                    <a href={`tel:${SHOP_INFO.phone_secondary}`} className="hover:text-gold-300">
                       {SHOP_INFO.phone_secondary}
                     </a>
-                  )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -84,10 +63,10 @@ export const Footer: React.FC = () => {
           <div className="space-y-3">
             <h4 className="text-gold-400 font-serif font-bold text-sm tracking-wider uppercase flex items-center gap-1.5 border-b border-gold-500/30 pb-1.5">
               <QrCode className="w-4 h-4" />
-              Digital Menu
+              QR Digital Menu
             </h4>
             <p className="text-xs text-stone-300 leading-relaxed">
-              Scan our in-shop QR code from any smartphone to view today's fresh sweets, savories, and daily pricing without waiting.
+              Scan our in-shop QR code from any smartphone to view today's fresh sweets, savories, and daily category pricing without waiting.
             </p>
             <div className="pt-2 flex flex-col gap-2">
               <Link

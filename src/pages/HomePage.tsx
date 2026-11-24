@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Logo } from '../components/Logo';
 import { useMenu } from '../context/MenuContext';
-import { useLanguage } from '../context/LanguageContext';
 import { SHOP_INFO } from '../data/initialData';
 import { ProductCard } from '../components/ProductCard';
 import { QRCodeModal } from '../components/QRCodeModal';
@@ -12,21 +11,18 @@ import {
   Sparkles, 
   MapPin, 
   Phone, 
-  Clock, 
   ShieldCheck, 
   Flame, 
   Award, 
   HeartHandshake,
-  ArrowRight,
-  ExternalLink
+  ArrowRight
 } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
   const { categories, products } = useMenu();
-  const { language } = useLanguage();
   const [qrModalOpen, setQrModalOpen] = useState(false);
 
-  // Featured products highlight (e.g. Milk Sweets & Ghee Sweets)
+  // Confirmed products highlight (Palkova, Chocolate Roll, Gova Roll, etc.)
   const featuredProducts = products.filter(p => p.is_featured).slice(0, 6);
 
   return (
@@ -45,10 +41,10 @@ export const HomePage: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           
-          {/* Logo Container with Strict Rule Enforcement */}
+          {/* Original Shop Logo */}
           <div className="flex justify-center mb-6">
-            <div className="p-3 bg-burgundy-950/80 rounded-2xl border-2 border-gold-500/60 shadow-gold-glow backdrop-blur-md">
-              <Logo size="lg" showPlaceholderNotice={true} />
+            <div className="p-4 bg-burgundy-950/90 rounded-3xl border-2 border-gold-500/60 shadow-gold-glow backdrop-blur-md">
+              <Logo size="lg" />
             </div>
           </div>
 
@@ -56,7 +52,7 @@ export const HomePage: React.FC = () => {
           <div className="space-y-2 max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full text-xs sm:text-sm font-semibold bg-gold-500/20 text-gold-300 border border-gold-400/40 mb-2">
               <Sparkles className="w-4 h-4 text-gold-400" />
-              <span>வேடசந்தூர் • Vedasandur, Tamil Nadu</span>
+              <span>ஸ்ரீ முருகன் விலாஸ் • {SHOP_INFO.location_ta}</span>
             </div>
 
             <h1 className="font-tamil font-extrabold text-3xl sm:text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-gold-200 via-gold-400 to-gold-200 tracking-tight leading-tight">
@@ -74,7 +70,7 @@ export const HomePage: React.FC = () => {
               {SHOP_INFO.tagline_ta}
             </p>
             <p className="text-xs sm:text-sm text-gold-200/90 font-serif italic">
-              "Experience the regal heritage of pure cow ghee sweets, traditional savories, and daily freshly handcrafted delicacies."
+              "Experience the authentic taste of traditional sweets and crunchy savories, freshly prepared with purity and care in Vedasandur."
             </p>
           </div>
 
@@ -98,7 +94,7 @@ export const HomePage: React.FC = () => {
             </button>
           </div>
 
-          {/* Quick Badges */}
+          {/* Badges */}
           <div className="mt-10 pt-8 border-t border-gold-500/20 max-w-3xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-medium text-stone-300">
             <div className="flex items-center justify-center gap-2">
               <Award className="w-4 h-4 text-gold-400 shrink-0" />
@@ -122,25 +118,25 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ======================================================== */}
-      {/* 2. CATEGORIES OVERVIEW GRID (With Section 5 Prices)       */}
+      {/* 2. EXACTLY SIX CATEGORIES WITH CONFIRMED PER-KG PRICES    */}
       {/* ======================================================== */}
       <section className="py-14 sm:py-20 bg-[#FAF7F2]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-12">
             <div className="text-xs font-bold uppercase tracking-widest text-burgundy-800 font-serif">
-              Our Specialties • எங்கள் வகைகள்
+              Our 6 Confirmed Categories • எங்கள் 6 தயாரிப்பு பிரிவுகள்
             </div>
             <h2 className="font-tamil font-bold text-2xl sm:text-4xl text-burgundy-950 mt-1">
               தயாரிப்பு பிரிவுகள் & நிலையான விலைகள்
             </h2>
             <p className="text-stone-600 text-sm mt-2">
-              All categories prepared freshly with authentic recipes and transparent per-kg pricing.
+              Transparent per-kg pricing across our six authentic categories.
             </p>
           </div>
 
-          {/* Category Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* 6 Category Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {categories.map((cat, idx) => (
               <Link
                 key={cat.id}
@@ -152,28 +148,28 @@ export const HomePage: React.FC = () => {
 
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-mono font-bold text-gold-700 bg-gold-50 px-2 py-0.5 rounded-full border border-gold-200">
+                    <span className="text-xs font-mono font-bold text-gold-700 bg-gold-50 px-2.5 py-0.5 rounded-full border border-gold-200">
                       0{idx + 1}
                     </span>
-                    <span className="font-mono font-bold text-lg text-burgundy-900 bg-burgundy-50 px-3 py-1 rounded-xl border border-burgundy-100">
+                    <span className="font-mono font-bold text-lg text-burgundy-900 bg-burgundy-50 px-3.5 py-1 rounded-xl border border-burgundy-100">
                       ₹{cat.default_price} <span className="text-xs text-stone-500 font-normal">/ {cat.unit}</span>
                     </span>
                   </div>
 
-                  <h3 className="font-tamil font-bold text-xl text-burgundy-950 group-hover:text-burgundy-700 transition-colors">
+                  <h3 className="font-tamil font-bold text-2xl text-burgundy-950 group-hover:text-burgundy-700 transition-colors">
                     {cat.name_ta}
                   </h3>
-                  <h4 className="font-serif font-semibold text-stone-700 text-sm mt-0.5">
+                  <h4 className="font-serif font-semibold text-stone-700 text-base mt-0.5">
                     {cat.name_en}
                   </h4>
 
-                  <p className="font-tamil text-xs text-stone-500 mt-2 leading-relaxed">
+                  <p className="font-tamil text-xs text-stone-500 mt-2.5 leading-relaxed">
                     {cat.description_ta}
                   </p>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between text-xs font-semibold text-gold-800 group-hover:text-gold-600">
-                  <span>View Items →</span>
+                <div className="mt-5 pt-3.5 border-t border-stone-100 flex items-center justify-between text-xs font-semibold text-gold-800 group-hover:text-gold-600">
+                  <span>View Items in Category →</span>
                   <Sparkles className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </Link>
@@ -184,7 +180,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ======================================================== */}
-      {/* 3. FEATURED PRODUCTS & MILK SWEETS SPOTLIGHT              */}
+      {/* 3. CONFIRMED PRODUCTS SPOTLIGHT                          */}
       {/* ======================================================== */}
       <section className="py-14 sm:py-20 bg-white border-y border-stone-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -192,13 +188,13 @@ export const HomePage: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
             <div>
               <div className="text-xs font-bold uppercase tracking-widest text-gold-700">
-                Fresh Daily Specialties • இன்றைய சிறப்பு
+                Fresh Products • இனிப்பு & கார வகைகள்
               </div>
               <h2 className="font-tamil font-bold text-2xl sm:text-3xl text-burgundy-950 mt-1">
-                பால்கோவா, சாக்லேட் ரோல் & கோவா ரோல்
+                பால்கோவா, சாக்லேட் ரோல், கோவா ரோல் & பிற
               </h2>
               <p className="text-stone-600 text-sm mt-1">
-                Delicious pure condensed milk sweets and signature favorites prepared with farm-fresh milk.
+                Available daily at Nellai Lala Sweets, Vedasandur.
               </p>
             </div>
 
@@ -222,7 +218,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ======================================================== */}
-      {/* 4. SHOP LOCATION & CONTACT INFORMATION                   */}
+      {/* 4. VERIFIED SHOP LOCATION & CONTACT INFORMATION          */}
       {/* ======================================================== */}
       <section className="py-14 sm:py-20 bg-gradient-to-b from-[#FAF7F2] to-[#F3EDE2]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -230,86 +226,71 @@ export const HomePage: React.FC = () => {
           <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border-2 border-gold-500/30 overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               
-              {/* Left Column: Details */}
+              {/* Left Column: Verified Details */}
               <div className="space-y-6">
                 <div>
                   <span className="px-3 py-1 rounded-full text-xs font-semibold bg-burgundy-100 text-burgundy-900 border border-burgundy-200">
-                    Visit Our Vedasandur Shop
+                    Official Shop Information
                   </span>
                   <h3 className="font-tamil font-bold text-2xl sm:text-3xl text-burgundy-950 mt-3">
-                    {SHOP_INFO.name_ta} – நேரடி கடை முகவரி
+                    ஸ்ரீ முருகன் விலாஸ் - {SHOP_INFO.name_ta}
                   </h3>
                   <p className="font-serif font-bold text-stone-700 text-lg">
-                    {SHOP_INFO.name_en}, Vedasandur
+                    {SHOP_INFO.name_en}
                   </p>
                 </div>
 
                 <div className="space-y-4">
-                  {/* Address */}
+                  {/* Verified Location */}
                   <div className="flex items-start gap-3">
                     <div className="p-2.5 rounded-xl bg-burgundy-900 text-gold-300 shrink-0">
                       <MapPin className="w-5 h-5" />
                     </div>
                     <div>
-                      <div className="font-bold text-stone-900 text-sm">Shop Address:</div>
-                      <p className="font-tamil text-stone-700 text-sm mt-0.5">{SHOP_INFO.address_ta}</p>
-                      <p className="text-stone-500 text-xs mt-0.5">{SHOP_INFO.address_en}</p>
+                      <div className="font-bold text-stone-900 text-sm">Location / இருப்பிடம்:</div>
+                      <p className="font-tamil text-stone-700 text-sm mt-0.5">{SHOP_INFO.location_ta}</p>
+                      <p className="text-stone-500 text-xs mt-0.5">{SHOP_INFO.location_en}</p>
                     </div>
                   </div>
 
-                  {/* Phone */}
+                  {/* Verified Phone */}
                   <div className="flex items-start gap-3">
                     <div className="p-2.5 rounded-xl bg-burgundy-900 text-gold-300 shrink-0">
                       <Phone className="w-5 h-5" />
                     </div>
                     <div>
-                      <div className="font-bold text-stone-900 text-sm">Phone Inquiries:</div>
-                      <div className="flex flex-wrap gap-3 mt-1">
+                      <div className="font-bold text-stone-900 text-sm">Phone Inquiries / தொடர்பு:</div>
+                      <div className="flex flex-wrap items-center gap-3 mt-1">
                         <a 
                           href={`tel:${SHOP_INFO.phone}`}
-                          className="font-mono text-sm font-bold text-burgundy-900 hover:text-gold-700"
+                          className="font-mono text-base font-bold text-burgundy-900 hover:text-gold-700"
                         >
                           {SHOP_INFO.phone}
                         </a>
-                        {SHOP_INFO.phone_secondary && (
-                          <a 
-                            href={`tel:${SHOP_INFO.phone_secondary}`}
-                            className="font-mono text-sm font-bold text-burgundy-900 hover:text-gold-700"
-                          >
-                            {SHOP_INFO.phone_secondary}
-                          </a>
-                        )}
+                        <span className="text-stone-400">/</span>
+                        <a 
+                          href={`tel:${SHOP_INFO.phone_secondary}`}
+                          className="font-mono text-base font-bold text-burgundy-900 hover:text-gold-700"
+                        >
+                          {SHOP_INFO.phone_secondary}
+                        </a>
                       </div>
-                    </div>
-                  </div>
-
-                  {/* Hours */}
-                  <div className="flex items-start gap-3">
-                    <div className="p-2.5 rounded-xl bg-burgundy-900 text-gold-300 shrink-0">
-                      <Clock className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-stone-900 text-sm">Shop Operating Hours:</div>
-                      <p className="text-stone-700 text-sm font-medium">{SHOP_INFO.timing_en}</p>
-                      <p className="font-tamil text-stone-500 text-xs">{SHOP_INFO.timing_ta}</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="pt-2 flex flex-wrap gap-3">
-                  <a
-                    href={SHOP_INFO.google_maps_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-5 py-3 rounded-xl bg-burgundy-900 hover:bg-burgundy-800 text-gold-300 font-semibold text-sm flex items-center gap-2 shadow-md transition-colors"
+                  <Link
+                    to="/menu"
+                    className="px-6 py-3 rounded-xl bg-burgundy-900 hover:bg-burgundy-800 text-gold-300 font-semibold text-sm flex items-center gap-2 shadow-md transition-colors"
                   >
-                    <ExternalLink className="w-4 h-4" />
-                    <span>Get Directions on Google Maps</span>
-                  </a>
+                    <UtensilsCrossed className="w-4 h-4" />
+                    <span>View Today's Digital Menu</span>
+                  </Link>
 
                   <button
                     onClick={() => setQrModalOpen(true)}
-                    className="px-5 py-3 rounded-xl bg-gold-500 hover:bg-gold-600 text-burgundy-950 font-bold text-sm flex items-center gap-2 shadow-md transition-colors"
+                    className="px-6 py-3 rounded-xl bg-gold-500 hover:bg-gold-600 text-burgundy-950 font-bold text-sm flex items-center gap-2 shadow-md transition-colors"
                   >
                     <QrCode className="w-4 h-4" />
                     <span>Open Shop QR Code</span>
@@ -317,26 +298,26 @@ export const HomePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Right Column: Decorative Visual Card */}
+              {/* Right Column: Original Logo Emblem Card */}
               <div className="relative rounded-2xl overflow-hidden bg-burgundy-950 p-8 text-center text-white border-2 border-gold-500/40">
                 <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:16px_16px]" />
                 
                 <div className="relative z-10 space-y-4">
                   <div className="flex justify-center">
-                    <Logo size="md" showPlaceholderNotice={false} />
+                    <Logo size="lg" />
                   </div>
 
                   <h4 className="font-tamil font-bold text-xl text-gold-300">
                     சுத்தமான இனிப்புகள் & கார வகைகள்
                   </h4>
                   <p className="text-xs text-stone-300 leading-relaxed max-w-sm mx-auto">
-                    விசேஷங்கள், திருமணங்கள் மற்றும் பண்டிகைகளுக்கான அனைத்து ஸ்வீட்ஸ் மற்றும் கார வகைகள் மொத்தமாகவும் சில்லறையாகவும் கிடைக்கும்.
+                    ஸ்ரீ முருகன் விலாஸ் நெல்லை லாலா ஸ்வீட்ஸ் • வேடசந்தூர், தமிழ்நாடு.
                   </p>
 
                   <div className="pt-4 border-t border-gold-500/30 flex items-center justify-center gap-4 text-xs text-gold-200">
                     <span>★ தூய நெய்</span>
-                    <span>★ தரமான முந்திரி</span>
-                    <span>★ பாரம்பரிய சுவை</span>
+                    <span>★ 6 தயாரிப்பு பிரிவுகள்</span>
+                    <span>★ நேரடி கடை விலை</span>
                   </div>
                 </div>
               </div>

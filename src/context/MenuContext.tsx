@@ -26,8 +26,10 @@ interface MenuContextType {
 
 const MenuContext = createContext<MenuContextType | undefined>(undefined);
 
-const LOCAL_STORAGE_PRODUCTS_KEY = 'nellai_products_cache';
-const LOCAL_STORAGE_CATEGORIES_KEY = 'nellai_categories_cache';
+const CACHE_VERSION_KEY = 'nellai_cache_version';
+const CURRENT_CACHE_VERSION = 'v3_six_categories_only';
+const LOCAL_STORAGE_PRODUCTS_KEY = 'nellai_products_cache_v3';
+const LOCAL_STORAGE_CATEGORIES_KEY = 'nellai_categories_cache_v3';
 
 export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [categories, setCategories] = useState<Category[]>(INITIAL_CATEGORIES);
@@ -46,6 +48,14 @@ export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     setError(null);
 
+    // Enforce cache versioning to clear any previous legacy 7-category cache
+    const savedVersion = localStorage.getItem(CACHE_VERSION_KEY);
+    if (savedVersion !== CURRENT_CACHE_VERSION) {
+      localStorage.removeItem('nellai_products_cache');
+      localStorage.removeItem('nellai_categories_cache');
+      localStorage.setItem(CACHE_VERSION_KEY, CURRENT_CACHE_VERSION);
+    }
+
     if (isSupabaseConfigured) {
       try {
         const [catRes, prodRes] = await Promise.all([
@@ -57,21 +67,28 @@ export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (prodRes.error) throw prodRes.error;
 
         if (catRes.data && catRes.data.length > 0) {
-          setCategories(catRes.data as Category[]);
+          // Filter out milk-sweets if legacy row exists in Supabase
+          const validCategories = (catRes.data as Category[]).filter(c => c.id !== 'milk-sweets');
+          setCategories(validCategories.length > 0 ? validCategories : INITIAL_CATEGORIES);
         } else {
-          // If Supabase table is empty, seed it with initial categories
           setCategories(INITIAL_CATEGORIES);
         }
 
         if (prodRes.data && prodRes.data.length > 0) {
-          setProducts(prodRes.data as Product[]);
+          // Remap any legacy milk-sweets items to sweets
+          const validProducts = (prodRes.data as Product[]).map(p => {
+            if (p.category_id === 'milk-sweets') {
+              return { ...p, category_id: 'sweets', price: 400 };
+            }
+            return p;
+          });
+          setProducts(validProducts);
         } else {
-          // Seed with initial products
           setProducts(INITIAL_PRODUCTS);
         }
         setIsUsingMockData(false);
       } catch (err: any) {
-        console.warn('Supabase fetch failed, falling back to local cached data:', err.message);
+        console.warn('Supabase fetch failed, falling back to verified initial data:', err.message);
         loadLocalFallback();
       }
     } else {
@@ -87,7 +104,10 @@ export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (cachedProducts) {
       try {
-        setProducts(JSON.parse(cachedProducts));
+        const parsed = JSON.parse(cachedProducts);
+        // Clean out legacy milk-sweets
+        const clean = parsed.map((p: Product) => p.category_id === 'milk-sweets' ? { ...p, category_id: 'sweets', price: 400 } : p);
+        setProducts(clean);
       } catch {
         setProducts(INITIAL_PRODUCTS);
         localStorage.setItem(LOCAL_STORAGE_PRODUCTS_KEY, JSON.stringify(INITIAL_PRODUCTS));
@@ -99,7 +119,9 @@ export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (cachedCategories) {
       try {
-        setCategories(JSON.parse(cachedCategories));
+        const parsed = JSON.parse(cachedCategories);
+        const clean = parsed.filter((c: Category) => c.id !== 'milk-sweets');
+        setCategories(clean.length === 6 ? clean : INITIAL_CATEGORIES);
       } catch {
         setCategories(INITIAL_CATEGORIES);
         localStorage.setItem(LOCAL_STORAGE_CATEGORIES_KEY, JSON.stringify(INITIAL_CATEGORIES));
@@ -113,7 +135,6 @@ export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     loadData();
 
-    // Set up Supabase Realtime subscription if configured
     if (isSupabaseConfigured) {
       const channel = supabase
         .channel('menu-realtime-changes')
@@ -121,7 +142,6 @@ export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children
           'postgres_changes',
           { event: '*', schema: 'public', table: 'products' },
           () => {
-            // Auto refresh products when owner updates
             refreshData();
           }
         )
@@ -218,12 +238,10 @@ export const MenuProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Reset to Defaults (Useful for shop owner or demo test)
   const resetToDefaultMenu = async (): Promise<void> => {
-    if (!isSupabaseConfigured) {
-      setProducts(INITIAL_PRODUCTS);
-      setCategories(INITIAL_CATEGORIES);
-      localStorage.setItem(LOCAL_STORAGE_PRODUCTS_KEY, JSON.stringify(INITIAL_PRODUCTS));
-      localStorage.setItem(LOCAL_STORAGE_CATEGORIES_KEY, JSON.stringify(INITIAL_CATEGORIES));
-    }
+    setProducts(INITIAL_PRODUCTS);
+    setCategories(INITIAL_CATEGORIES);
+    localStorage.setItem(LOCAL_STORAGE_PRODUCTS_KEY, JSON.stringify(INITIAL_PRODUCTS));
+    localStorage.setItem(LOCAL_STORAGE_CATEGORIES_KEY, JSON.stringify(INITIAL_CATEGORIES));
   };
 
   return (

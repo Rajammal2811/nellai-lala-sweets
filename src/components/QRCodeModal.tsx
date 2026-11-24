@@ -23,7 +23,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ isOpen, onClose }) => 
   const [copied, setCopied] = useState<boolean>(false);
   const printStandRef = useRef<HTMLDivElement>(null);
 
-  // Link to deployed customer menu (dynamic origin)
+  // Link to deployed customer menu (uses window.location.origin or configured URL)
   const defaultMenuUrl = typeof window !== 'undefined'
     ? `${window.location.origin}/menu`
     : 'https://nellai-lala-sweets.vercel.app/menu';
@@ -42,7 +42,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ isOpen, onClose }) => 
   useEffect(() => {
     if (!targetUrl) return;
 
-    // Generate high resolution QR code data URL
+    // Generate high resolution QR code data URL with rich burgundy dots
     QRCode.toDataURL(targetUrl, {
       width: 480,
       margin: 2,
@@ -50,7 +50,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ isOpen, onClose }) => 
         dark: '#5C1527', // Rich burgundy QR dots
         light: '#FFFFFF', // Crisp pure white background
       },
-      errorCorrectionLevel: 'H', // High error correction for reliable scanning even when printed
+      errorCorrectionLevel: 'H',
     })
       .then(url => setQrDataUrl(url))
       .catch(err => console.error('Error generating QR code:', err));
@@ -109,7 +109,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ isOpen, onClose }) => 
             Nellai Lala Sweets • QR Digital Menu
           </p>
           <p className="text-xs text-stone-500 mt-1 max-w-md mx-auto">
-            Customers can scan this code with any mobile camera to view today's fresh sweets, savories and live prices.
+            Customers can scan this code with any mobile camera to view today's fresh sweets, savories and prices without login.
           </p>
         </div>
 
@@ -126,16 +126,19 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ isOpen, onClose }) => 
           {/* Shop Header Inside Card */}
           <div className="text-center relative z-10 space-y-2">
             <div className="flex justify-center">
-              <Logo size="sm" />
+              <Logo size="md" />
             </div>
 
-            <div className="font-tamil font-bold text-xl text-burgundy-950 leading-tight">
+            <div className="text-xs font-semibold text-gold-800 tracking-wide">
+              ஸ்ரீ முருகன் விலாஸ்
+            </div>
+            <div className="font-tamil font-bold text-2xl text-burgundy-950 leading-tight">
               {SHOP_INFO.name_ta}
             </div>
             <div className="font-serif font-extrabold text-base tracking-widest text-burgundy-900 uppercase">
               {SHOP_INFO.name_en}
             </div>
-            <div className="text-[11px] font-semibold text-gold-700 tracking-wider uppercase">
+            <div className="text-xs font-semibold text-gold-700 tracking-wider">
               {SHOP_INFO.location_en}
             </div>
 
@@ -168,16 +171,16 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ isOpen, onClose }) => 
                 ✨ No App Required • Live Shop Availability
               </p>
               <p className="font-tamil text-[11px] text-burgundy-900 font-semibold">
-                தூய நெய் மற்றும் சுவையான இனிப்புகள்
+                6 பாரம்பரிய தயாரிப்பு பிரிவுகள்
               </p>
-              <p className="text-[10px] text-stone-400 pt-1 font-mono">
-                Ph: {SHOP_INFO.phone}
+              <p className="text-xs text-stone-600 pt-1 font-mono font-bold">
+                Ph: {SHOP_INFO.phone} / {SHOP_INFO.phone_secondary}
               </p>
             </div>
           </div>
         </div>
 
-        {/* QR Code Target URL Configuration (Editable for custom domain) */}
+        {/* QR Code Target URL Configuration */}
         <div className="mt-6 p-3 rounded-xl bg-stone-50 border border-stone-200 text-xs">
           <label className="block text-stone-600 font-medium mb-1">
             Linked Menu Destination URL:
@@ -209,7 +212,7 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({ isOpen, onClose }) => 
             </a>
           </div>
           <p className="text-[10px] text-stone-500 mt-1">
-            ℹ️ The QR code remains permanently valid. When the shop owner edits products or prices in the dashboard, customers see instant updates without changing this QR.
+            ℹ️ This QR code remains permanently valid. When the owner edits products, prices, or availability in the dashboard, customer scans immediately show the updated menu without changing the QR code.
           </p>
         </div>
 

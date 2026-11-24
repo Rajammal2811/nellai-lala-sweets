@@ -14,20 +14,17 @@ import {
   ExternalLink, 
   Sparkles, 
   Upload, 
-  Image as ImageIcon, 
   AlertTriangle, 
   Save, 
   X, 
-  RefreshCw,
-  Search,
-  Check,
-  Eye,
-  ShieldCheck,
-  Database
+  Search, 
+  Check, 
+  Eye, 
+  Database 
 } from 'lucide-react';
 
 export const AdminDashboardPage: React.FC = () => {
-  const { user, logout, isMockAuth } = useAuth();
+  const { user, logout, isSupabaseConnected } = useAuth();
   const { 
     categories, 
     products, 
@@ -52,13 +49,13 @@ export const AdminDashboardPage: React.FC = () => {
 
   // Form State
   const [formData, setFormData] = useState({
-    category_id: 'milk-sweets',
+    category_id: 'sweets',
     name_en: '',
     name_ta: '',
-    price: 600,
+    price: 400,
     unit: '1 kg',
     is_available: true,
-    image_url: '',
+    image_url: '/product-placeholder.svg',
     description_en: '',
     description_ta: '',
     is_featured: false,
@@ -89,7 +86,7 @@ export const AdminDashboardPage: React.FC = () => {
       price: categories[0]?.default_price || 400,
       unit: '1 kg',
       is_available: true,
-      image_url: 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=600&auto=format&fit=crop&q=80',
+      image_url: '/product-placeholder.svg',
       description_en: '',
       description_ta: '',
       is_featured: false,
@@ -106,7 +103,7 @@ export const AdminDashboardPage: React.FC = () => {
       price: product.price,
       unit: product.unit || '1 kg',
       is_available: product.is_available,
-      image_url: product.image_url,
+      image_url: product.image_url || '/product-placeholder.svg',
       description_en: product.description_en || '',
       description_ta: product.description_ta || '',
       is_featured: Boolean(product.is_featured),
@@ -128,7 +125,7 @@ export const AdminDashboardPage: React.FC = () => {
     reader.onload = (event) => {
       if (event.target?.result) {
         setFormData(prev => ({ ...prev, image_url: event.target!.result as string }));
-        showNotification('Product photo uploaded successfully!');
+        showNotification('Product photograph uploaded successfully!');
       }
     };
     reader.readAsDataURL(file);
@@ -237,13 +234,13 @@ export const AdminDashboardPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
           
           <div className="flex items-center gap-3">
-            <Logo size="sm" showPlaceholderNotice={false} />
+            <Logo size="sm" />
             <div>
               <div className="font-tamil font-bold text-gold-300 text-sm">
-                நெல்லை லாலா ஸ்வீட்ஸ் • நிர்வாக பலகை
+                ஸ்ரீ முருகன் விலாஸ் • நெல்லை லாலா ஸ்வீட்ஸ்
               </div>
               <h1 className="font-serif font-bold text-white text-base">
-                Owner Admin Dashboard
+                Owner Administration Dashboard
               </h1>
             </div>
           </div>
@@ -252,7 +249,7 @@ export const AdminDashboardPage: React.FC = () => {
             {/* Sync Status Badge */}
             <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-burgundy-800/80 border border-gold-500/30 text-stone-200">
               <Database className="w-3.5 h-3.5 text-gold-400" />
-              <span>{isMockAuth ? 'Local Demo Mode' : 'Live Supabase Connected'}</span>
+              <span>{isSupabaseConnected ? 'Live Supabase Connected' : 'Local Storage Mode'}</span>
             </div>
 
             {/* View Customer Menu link */}
@@ -333,45 +330,17 @@ export const AdminDashboardPage: React.FC = () => {
 
           <div className="bg-white p-5 rounded-2xl border border-gold-200 shadow-sm bg-gradient-to-br from-white to-gold-50/30">
             <div className="text-xs font-bold text-gold-900 uppercase tracking-wider">
-              Categories
+              Confirmed Categories
             </div>
             <div className="text-2xl sm:text-3xl font-extrabold font-mono text-gold-800 mt-1">
               {categories.length}
             </div>
-            <div className="text-[11px] text-stone-500 mt-1">Traditional sections</div>
+            <div className="text-[11px] text-stone-500 mt-1">Exact 6 categories</div>
           </div>
         </div>
 
         {/* ======================================================== */}
-        {/* 3. LOGO RULE INFO BANNER                                  */}
-        {/* ======================================================== */}
-        <div className="p-4 rounded-2xl bg-burgundy-950 text-white border-2 border-gold-500/40 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gold-500/20 text-gold-400 shrink-0">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="font-bold text-gold-300 text-sm">
-                Original Logo Rule / அசல் லோகோ விபரம்
-              </div>
-              <p className="text-xs text-stone-300 mt-0.5">
-                A temporary placeholder is currently active. When the original shop logo file is provided, simply place it in <code>/public/logo-placeholder.svg</code> or replace it without modifying proportions or colors.
-              </p>
-            </div>
-          </div>
-          {isMockAuth && (
-            <button
-              onClick={() => resetToDefaultMenu()}
-              className="shrink-0 px-3 py-1.5 rounded-lg bg-burgundy-800 hover:bg-burgundy-700 text-xs text-stone-300 border border-stone-600 transition-colors"
-              title="Reset products back to standard prompt values"
-            >
-              Reset Initial Menu Data
-            </button>
-          )}
-        </div>
-
-        {/* ======================================================== */}
-        {/* 4. ACTIONS & FILTERS BAR                                  */}
+        {/* 3. ACTIONS & FILTERS BAR                                  */}
         {/* ======================================================== */}
         <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
           
@@ -394,10 +363,10 @@ export const AdminDashboardPage: React.FC = () => {
               onChange={e => setAdminCategory(e.target.value)}
               className="px-3 py-2 rounded-xl border border-stone-300 text-xs font-semibold text-stone-700 bg-stone-50 focus:outline-none focus:ring-2 focus:ring-gold-500"
             >
-              <option value="all">All Categories ({categories.length})</option>
+              <option value="all">All 6 Categories ({categories.length})</option>
               {categories.map(c => (
                 <option key={c.id} value={c.id}>
-                  {c.name_en} ({c.name_ta})
+                  {c.name_en} ({c.name_ta}) – ₹{c.default_price}/kg
                 </option>
               ))}
             </select>
@@ -416,7 +385,7 @@ export const AdminDashboardPage: React.FC = () => {
         </div>
 
         {/* ======================================================== */}
-        {/* 5. PRODUCTS TABLE / LIST                                  */}
+        {/* 4. PRODUCTS TABLE / LIST                                  */}
         {/* ======================================================== */}
         <div className="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
@@ -443,9 +412,9 @@ export const AdminDashboardPage: React.FC = () => {
                       {/* Photo Thumbnail */}
                       <td className="py-3 px-4">
                         <img
-                          src={product.image_url || 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=600&auto=format&fit=crop&q=80'}
+                          src={product.image_url || '/product-placeholder.svg'}
                           alt={product.name_en}
-                          className="w-12 h-12 object-cover rounded-xl border border-stone-200 shadow-xs"
+                          className="w-12 h-12 object-cover rounded-xl border border-stone-200 shadow-xs bg-stone-900"
                         />
                       </td>
 
@@ -530,7 +499,7 @@ export const AdminDashboardPage: React.FC = () => {
       </main>
 
       {/* ======================================================== */}
-      {/* 6. ADD / EDIT PRODUCT MODAL                               */}
+      {/* 5. ADD / EDIT PRODUCT MODAL                               */}
       {/* ======================================================== */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto animate-fadeIn">
@@ -567,7 +536,6 @@ export const AdminDashboardPage: React.FC = () => {
                     setFormData(prev => ({
                       ...prev,
                       category_id: e.target.value,
-                      // auto fill category default price if user hasn't typed custom
                       price: selectedCat ? selectedCat.default_price : prev.price
                     }));
                   }}
@@ -652,22 +620,22 @@ export const AdminDashboardPage: React.FC = () => {
                 
                 <div className="flex items-center gap-3">
                   <img
-                    src={formData.image_url || 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=600&auto=format&fit=crop&q=80'}
+                    src={formData.image_url || '/product-placeholder.svg'}
                     alt="Preview"
-                    className="w-14 h-14 object-cover rounded-xl border border-stone-300 shrink-0"
+                    className="w-14 h-14 object-cover rounded-xl border border-stone-300 shrink-0 bg-stone-900"
                   />
                   <div className="flex-1 space-y-1.5">
                     <input
                       type="text"
                       value={formData.image_url}
                       onChange={e => setFormData({ ...formData, image_url: e.target.value })}
-                      placeholder="Paste Image URL or upload below"
+                      placeholder="Paste Image URL or upload from device"
                       className="w-full px-3 py-1.5 rounded-lg border border-stone-300 text-xs text-stone-800 focus:outline-none focus:ring-2 focus:ring-gold-500"
                     />
                     
                     <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold cursor-pointer border border-stone-300 transition-colors">
                       <Upload className="w-3.5 h-3.5" />
-                      <span>Upload Photo from Device</span>
+                      <span>Upload Real Photograph from Device</span>
                       <input
                         type="file"
                         accept="image/*"
@@ -761,7 +729,7 @@ export const AdminDashboardPage: React.FC = () => {
       )}
 
       {/* ======================================================== */}
-      {/* 7. DELETE CONFIRMATION MODAL                              */}
+      {/* 6. DELETE CONFIRMATION MODAL                              */}
       {/* ======================================================== */}
       {productToDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">

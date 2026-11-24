@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
 import { useLanguage, LanguageMode } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import { SHOP_INFO } from '../data/initialData';
 import { 
   Menu as MenuIcon, 
   X, 
@@ -33,18 +34,21 @@ export const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             
-            {/* Left: Logo & Brand Name */}
+            {/* Left: Original Logo & Brand Name */}
             <Link to="/" className="flex items-center gap-3 group py-1">
               <Logo size="md" />
               <div className="hidden sm:block text-left">
-                <div className="font-tamil font-bold text-gold-400 text-sm leading-tight group-hover:text-gold-300 transition-colors">
-                  நெல்லை லாலா ஸ்வீட்ஸ்
+                <div className="text-[11px] text-gold-300 font-semibold tracking-wide">
+                  ஸ்ரீ முருகன் விலாஸ்
                 </div>
-                <div className="font-serif font-bold text-white tracking-wider text-base uppercase leading-snug">
-                  Nellai Lala Sweets
+                <div className="font-tamil font-bold text-white text-base leading-tight group-hover:text-gold-300 transition-colors">
+                  {SHOP_INFO.name_ta}
                 </div>
-                <div className="text-[11px] text-stone-300 tracking-widest uppercase">
-                  Vedasandur, TN
+                <div className="font-serif font-bold text-gold-400 tracking-wider text-xs uppercase leading-snug">
+                  {SHOP_INFO.name_en}
+                </div>
+                <div className="text-[10px] text-stone-300 tracking-wider">
+                  {SHOP_INFO.location_en}
                 </div>
               </div>
             </Link>
@@ -89,7 +93,7 @@ export const Navbar: React.FC = () => {
               <Link
                 to="/admin"
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 ${
-                  isActive('/admin')
+                  isActive('/admin') || isActive('/admin/dashboard')
                     ? 'bg-gold-500/20 text-gold-300 border border-gold-500/40'
                     : 'text-stone-300 hover:text-gold-300 hover:bg-burgundy-800/40'
                 }`}
@@ -101,7 +105,7 @@ export const Navbar: React.FC = () => {
 
             {/* Language Preference & Mobile Menu Button */}
             <div className="flex items-center gap-2">
-              {/* Language Selector Dropdown / Toggle */}
+              {/* Language Selector Pill */}
               <div className="relative flex items-center bg-burgundy-900/80 border border-gold-500/30 rounded-lg p-0.5 text-xs font-medium">
                 <Languages className="w-3.5 h-3.5 text-gold-400 ml-2 mr-1" />
                 <button
@@ -212,9 +216,9 @@ export const Navbar: React.FC = () => {
               <span>{isAdmin ? 'Owner Admin Panel' : 'Shop Owner Login'}</span>
             </Link>
 
-            <div className="pt-2 border-t border-gold-500/20 text-xs text-stone-400 flex items-center gap-2 px-3">
+            <div className="pt-2 border-t border-gold-500/20 text-xs text-stone-300 flex items-center gap-2 px-3">
               <PhoneCall className="w-3.5 h-3.5 text-gold-400" />
-              <span>Vedasandur: +91 98421 23456</span>
+              <span>{SHOP_INFO.phone} / {SHOP_INFO.phone_secondary}</span>
             </div>
           </div>
         )}

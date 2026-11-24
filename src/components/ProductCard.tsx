@@ -14,10 +14,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const category = categories.find(c => c.id === product.category_id);
 
-  // Fallback placeholder image if image link fails or is blank
+  // Dedicated un-misleading placeholder when real shop photo hasn't been uploaded yet
   const displayImage = !imageError && product.image_url 
     ? product.image_url 
-    : 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=600&auto=format&fit=crop&q=80';
+    : '/product-placeholder.svg';
 
   return (
     <>
@@ -30,7 +30,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         }`}
       >
         {/* Top Image Container */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100">
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-900">
           <img
             src={displayImage}
             alt={`${product.name_en} - ${product.name_ta}`}
@@ -42,7 +42,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           />
 
           {/* Gradient Overlay for contrast */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
 
           {/* Top Badges */}
           <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
@@ -200,14 +200,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   </div>
                 </div>
                 <div className="text-right text-xs text-stone-500">
-                  <div>Nellai Lala Sweets</div>
-                  <div className="text-gold-700 font-semibold">Vedasandur, TN</div>
+                  <div className="font-bold text-burgundy-900">Nellai Lala Sweets</div>
+                  <div className="text-gold-700 font-semibold">Vedasandur, Tamil Nadu</div>
                 </div>
               </div>
 
               {/* Digital Menu Information Note */}
-              <div className="text-[11px] text-center text-stone-400">
-                View-only digital QR menu • Visit our shop in Vedasandur for purchases.
+              <div className="text-[11px] text-center text-stone-500">
+                View-only digital QR menu • Direct in-shop purchase at Vedasandur.
               </div>
             </div>
           </div>

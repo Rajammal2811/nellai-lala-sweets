@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="pBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A0E1A"/>
+      <stop offset="100%" stop-color="#2D060F"/>
+    </linearGradient>
+    <linearGradient id="pGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCE082"/>
+      <stop offset="50%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#AA820A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="300" fill="url(#pBg)"/>
+  
+  <!-- Subtle Border Frame -->
+  <rect x="12" y="12" width="376" height="276" rx="12" fill="none" stroke="url(#pGold)" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.6"/>
+
+  <!-- Center Decorative Icon: Traditional Sweet Diya / Bowl -->
+  <g transform="translate(200, 120)">
+    <!-- Aura Glow -->
+    <circle cx="0" cy="0" r="42" fill="#D4AF37" opacity="0.12"/>
+    
+    <!-- Bowl -->
+    <path d="M-30 10 C-24 32, 24 32, 30 10 C20 6, -20 6, -30 10 Z" fill="url(#pGold)"/>
+    <path d="M-12 32 L12 32 L8 40 L-8 40 Z" fill="#D4AF37"/>
+
+    <!-- Flame / Sweet Mound -->
+    <circle cx="0" cy="0" r="16" fill="url(#pGold)"/>
+    <circle cx="-12" cy="6" r="11" fill="#E6CA65"/>
+    <circle cx="12" cy="6" r="11" fill="#E6CA65"/>
+    <circle cx="0" cy="-8" r="9" fill="#FFF2BD"/>
+  </g>
+
+  <!-- Notice Typography -->
+  <text x="200" y="200" font-family="'Mukta Malar', 'Noto Sans Tamil', sans-serif" font-weight="700" font-size="16" fill="#FCE082" text-anchor="middle">
+    தயாரிப்பு புகைப்படம் விரைவில்
+  </text>
+  <text x="200" y="224" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="12" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">
+    PRODUCT PHOTO PLACEHOLDER
+  </text>
+  <text x="200" y="246" font-family="sans-serif" font-size="10" fill="#E2CA70" text-anchor="middle" opacity="0.8">
+    (Actual shop photograph will be uploaded by owner)
+  </text>
+</svg>

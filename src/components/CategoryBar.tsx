@@ -4,7 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { Sparkles } from 'lucide-react';
 
 export const CategoryBar: React.FC = () => {
-  const { categories, selectedCategory, setSelectedCategory } = useMenu();
+  const { categories, products, selectedCategory, setSelectedCategory } = useMenu();
   const { language } = useLanguage();
 
   return (
@@ -26,11 +26,16 @@ export const CategoryBar: React.FC = () => {
             <span>
               {language === 'ta' ? 'அனைத்தும்' : language === 'en' ? 'All Items' : 'அனைத்தும் / All'}
             </span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-stone-100 text-stone-600 font-mono font-medium">
+              {products.length}
+            </span>
           </button>
 
-          {/* Dynamic Categories */}
+          {/* 6 Confirmed Categories */}
           {categories.map(category => {
             const isSelected = selectedCategory === category.id;
+            const count = products.filter(p => p.category_id === category.id).length;
+
             return (
               <button
                 key={category.id}
@@ -50,16 +55,28 @@ export const CategoryBar: React.FC = () => {
                     : `${category.name_ta} (${category.name_en})`}
                 </span>
                 
-                {/* Category Price Badge */}
-                <span
-                  className={`text-[11px] px-1.5 py-0.5 rounded-full font-mono font-medium ${
-                    isSelected
-                      ? 'bg-gold-500 text-burgundy-950 font-bold'
-                      : 'bg-stone-100 text-stone-600 border border-stone-200'
-                  }`}
-                >
-                  ₹{category.default_price}/kg
-                </span>
+                {/* Standard Category Price Badge if verified */}
+                {category.standard_price_info ? (
+                  <span
+                    className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ${
+                      isSelected
+                        ? 'bg-gold-500 text-burgundy-950'
+                        : 'bg-amber-50 text-amber-900 border border-amber-200'
+                    }`}
+                  >
+                    {category.standard_price_info}
+                  </span>
+                ) : (
+                  <span
+                    className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono font-medium ${
+                      isSelected
+                        ? 'bg-gold-500/30 text-gold-200'
+                        : 'bg-stone-100 text-stone-500'
+                    }`}
+                  >
+                    {count}
+                  </span>
+                )}
               </button>
             );
           })}

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
-import { useLanguage, LanguageMode } from '../context/LanguageContext';
-import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import { SHOP_INFO } from '../data/initialData';
 import { 
   Menu as MenuIcon, 
@@ -10,7 +9,6 @@ import {
   QrCode, 
   UtensilsCrossed, 
   Home, 
-  ShieldCheck, 
   Languages,
   PhoneCall
 } from 'lucide-react';
@@ -20,7 +18,6 @@ export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [qrModalOpen, setQrModalOpen] = useState(false);
   const { language, setLanguage } = useLanguage();
-  const { isAdmin } = useAuth();
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -34,12 +31,12 @@ export const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             
-            {/* Left: Original Logo & Brand Name */}
+            {/* Left: Original Shop Logo & Brand Identity */}
             <Link to="/" className="flex items-center gap-3 group py-1">
               <Logo size="md" />
               <div className="hidden sm:block text-left">
                 <div className="text-[11px] text-gold-300 font-semibold tracking-wide">
-                  ஸ்ரீ முருகன் விலாஸ்
+                  {SHOP_INFO.brand_ta}
                 </div>
                 <div className="font-tamil font-bold text-white text-base leading-tight group-hover:text-gold-300 transition-colors">
                   {SHOP_INFO.name_ta}
@@ -54,10 +51,10 @@ export const Navbar: React.FC = () => {
             </Link>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden md:flex items-center space-x-1 lg:space-x-3">
+            <nav className="hidden md:flex items-center space-x-2 lg:space-x-4">
               <Link
                 to="/"
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 ${
+                className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 ${
                   isActive('/') 
                     ? 'bg-gold-500/20 text-gold-300 border border-gold-500/40 shadow-sm' 
                     : 'text-stone-200 hover:text-gold-300 hover:bg-burgundy-800/40'
@@ -69,38 +66,25 @@ export const Navbar: React.FC = () => {
 
               <Link
                 to="/menu"
-                className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 ${
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 ${
                   isActive('/menu')
                     ? 'bg-gold-500 text-burgundy-950 shadow-md font-bold'
                     : 'text-stone-100 bg-burgundy-800/60 hover:bg-gold-500/20 hover:text-gold-300 border border-gold-500/30'
                 }`}
               >
                 <UtensilsCrossed className="w-4 h-4" />
-                <span>Menu / மெனு</span>
+                <span>Menu / மெனு (64)</span>
               </Link>
 
               {/* QR Code Action Button */}
               <button
                 onClick={() => setQrModalOpen(true)}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-stone-200 hover:text-gold-300 hover:bg-burgundy-800/50 transition-colors flex items-center gap-1.5"
+                className="px-3.5 py-2 rounded-lg text-sm font-medium text-stone-200 hover:text-gold-300 hover:bg-burgundy-800/50 transition-colors flex items-center gap-1.5 border border-gold-500/20"
                 title="View & Download Shop Menu QR Code"
               >
                 <QrCode className="w-4 h-4 text-gold-400" />
                 <span>QR Code</span>
               </button>
-
-              {/* Admin Dashboard / Login */}
-              <Link
-                to="/admin"
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 ${
-                  isActive('/admin') || isActive('/admin/dashboard')
-                    ? 'bg-gold-500/20 text-gold-300 border border-gold-500/40'
-                    : 'text-stone-300 hover:text-gold-300 hover:bg-burgundy-800/40'
-                }`}
-              >
-                <ShieldCheck className="w-4 h-4 text-gold-400" />
-                <span>{isAdmin ? 'Owner Panel' : 'Owner Login'}</span>
-              </Link>
             </nav>
 
             {/* Language Preference & Mobile Menu Button */}
@@ -191,7 +175,7 @@ export const Navbar: React.FC = () => {
               }`}
             >
               <UtensilsCrossed className="w-5 h-5 text-gold-400" />
-              <span>Digital Menu / மெனு</span>
+              <span>Digital Menu / மெனு (64 பொருட்கள்)</span>
             </Link>
 
             <button
@@ -204,17 +188,6 @@ export const Navbar: React.FC = () => {
               <QrCode className="w-5 h-5 text-gold-400" />
               <span>QR Code Scanner & Print Stand</span>
             </button>
-
-            <Link
-              to="/admin"
-              onClick={() => setMobileMenuOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-base font-medium ${
-                isActive('/admin') ? 'bg-gold-500 text-burgundy-950 font-bold' : 'text-stone-200 hover:bg-burgundy-900'
-              }`}
-            >
-              <ShieldCheck className="w-5 h-5 text-gold-400" />
-              <span>{isAdmin ? 'Owner Admin Panel' : 'Shop Owner Login'}</span>
-            </Link>
 
             <div className="pt-2 border-t border-gold-500/20 text-xs text-stone-300 flex items-center gap-2 px-3">
               <PhoneCall className="w-3.5 h-3.5 text-gold-400" />

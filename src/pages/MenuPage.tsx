@@ -1,7 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useMenu } from '../context/MenuContext';
-import { useLanguage } from '../context/LanguageContext';
 import { CategoryBar } from '../components/CategoryBar';
 import { ProductCard } from '../components/ProductCard';
 import { QRCodeModal } from '../components/QRCodeModal';
@@ -13,30 +12,25 @@ import {
   Sparkles, 
   QrCode, 
   CheckCircle2, 
-  Info,
-  RefreshCw
+  Info
 } from 'lucide-react';
 
 export const MenuPage: React.FC = () => {
   const { 
     categories, 
     products, 
-    isLoading, 
-    isSyncing,
     selectedCategory, 
     setSelectedCategory, 
     searchQuery, 
     setSearchQuery,
     availabilityFilter,
-    setAvailabilityFilter,
-    refreshData 
+    setAvailabilityFilter
   } = useMenu();
 
-  const { language } = useLanguage();
   const [searchParams] = useSearchParams();
   const [qrModalOpen, setQrModalOpen] = useState(false);
 
-  // Sync category from URL search params if present (e.g. ?category=sweets)
+  // Sync category from URL search params if present (e.g. ?category=traditional-sweets)
   useEffect(() => {
     const catParam = searchParams.get('category');
     if (catParam) {
@@ -57,7 +51,7 @@ export const MenuPage: React.FC = () => {
         return false;
       }
 
-      // Search match (Tamil name, English name, or category name)
+      // Search match (Tamil name, English name, or description)
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase().trim();
         const matchesEn = product.name_en.toLowerCase().includes(query);
@@ -88,7 +82,7 @@ export const MenuPage: React.FC = () => {
           </div>
 
           <h1 className="font-tamil font-extrabold text-3xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-gold-100 via-gold-300 to-gold-100">
-            எங்கள் இனிப்பு & கார வகைகள்
+            எங்கள் முழுமையான மெனு (64 பொருட்கள்)
           </h1>
 
           <p className="font-serif font-bold text-lg sm:text-xl text-stone-200">
@@ -96,7 +90,7 @@ export const MenuPage: React.FC = () => {
           </p>
 
           <p className="text-xs sm:text-sm text-stone-300 max-w-xl mx-auto font-tamil">
-            6 பாரம்பரிய தயாரிப்பு பிரிவுகள் • நேரடி கடை இருப்பு & விலைப்பட்டியல்
+            6 உறுதிப்படுத்தப்பட்ட தயாரிப்பு பிரிவுகள் • நேரடி கடை இருப்பு & விலைப்பட்டியல்
           </p>
         </div>
       </section>
@@ -119,7 +113,7 @@ export const MenuPage: React.FC = () => {
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search sweets, savories, chips (தேடுங்கள்)..."
+              placeholder="Search 64 sweets, savouries, chips (தேடுங்கள்)..."
               className="w-full pl-10 pr-9 py-2.5 rounded-xl border border-stone-300 text-sm text-stone-900 bg-stone-50/50 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:bg-white transition-all font-sans"
             />
             {searchQuery && (
@@ -133,7 +127,7 @@ export const MenuPage: React.FC = () => {
             )}
           </div>
 
-          {/* Availability Toggle and Refresh Sync */}
+          {/* Availability Toggle and QR Shortcut */}
           <div className="w-full md:w-auto flex items-center justify-between md:justify-end gap-3">
             
             {/* Availability Filter Pill */}
@@ -147,7 +141,7 @@ export const MenuPage: React.FC = () => {
                     : 'text-stone-600 hover:text-stone-900'
                 }`}
               >
-                All Items ({products.length})
+                All 64 Items
               </button>
               <button
                 type="button"
@@ -163,23 +157,13 @@ export const MenuPage: React.FC = () => {
               </button>
             </div>
 
-            {/* Live Refresh Button */}
-            <button
-              onClick={() => refreshData()}
-              disabled={isSyncing}
-              className="p-2 rounded-xl border border-stone-200 text-stone-600 hover:bg-stone-100 transition-colors"
-              title="Refresh menu data"
-            >
-              <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin text-gold-600' : ''}`} />
-            </button>
-
             {/* QR Modal Trigger */}
             <button
               onClick={() => setQrModalOpen(true)}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-burgundy-950 text-gold-300 hover:bg-burgundy-900 text-xs font-semibold border border-gold-500/40"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-burgundy-950 text-gold-300 hover:bg-burgundy-900 text-xs font-semibold border border-gold-500/40"
             >
               <QrCode className="w-4 h-4 text-gold-400" />
-              <span>Table QR</span>
+              <span>QR Code</span>
             </button>
 
           </div>
@@ -202,31 +186,21 @@ export const MenuPage: React.FC = () => {
               </p>
             </div>
             
-            <div className="bg-gold-500 text-burgundy-950 px-3.5 py-1.5 rounded-xl font-bold font-mono text-sm shrink-0 shadow-md">
-              Category Standard: ₹{currentCategoryObj.default_price} / {currentCategoryObj.unit}
-            </div>
+            {currentCategoryObj.standard_price_info && (
+              <div className="bg-gold-500 text-burgundy-950 px-3.5 py-1.5 rounded-xl font-bold font-mono text-sm shrink-0 shadow-md">
+                Standard: {currentCategoryObj.standard_price_info}
+              </div>
+            )}
           </div>
         )}
       </div>
 
       {/* ======================================================== */}
-      {/* 4. PRODUCTS GRID                                          */}
+      {/* 4. COMPLETE PRODUCTS GRID (64 ITEMS)                     */}
       {/* ======================================================== */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         
-        {isLoading ? (
-          /* Loading Skeleton */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {[1, 2, 3, 4, 5, 6].map(i => (
-              <div key={i} className="bg-white rounded-2xl p-4 border border-stone-200 animate-pulse space-y-3">
-                <div className="aspect-[4/3] bg-stone-200 rounded-xl" />
-                <div className="h-5 bg-stone-200 rounded w-3/4" />
-                <div className="h-4 bg-stone-200 rounded w-1/2" />
-                <div className="h-6 bg-stone-200 rounded w-1/3 pt-2" />
-              </div>
-            ))}
-          </div>
-        ) : filteredProducts.length === 0 ? (
+        {filteredProducts.length === 0 ? (
           /* Empty Results View */
           <div className="bg-white rounded-3xl p-12 text-center border border-stone-200 max-w-lg mx-auto shadow-sm my-8 space-y-4">
             <div className="w-16 h-16 rounded-full bg-gold-100 text-gold-700 flex items-center justify-center mx-auto">
@@ -265,7 +239,7 @@ export const MenuPage: React.FC = () => {
             <span>நேரடி கடையில் கிடைக்கும் புத்தம் புதிய இனிப்புகள்</span>
           </div>
           <p className="text-xs text-stone-500">
-            This digital QR menu displays our live shop availability and category prices. Visit Nellai Lala Sweets, Vedasandur for purchases.
+            This digital QR menu displays our live shop availability and confirmed prices. Visit Nellai Lala Sweets, Vedasandur for purchases.
           </p>
         </div>
 

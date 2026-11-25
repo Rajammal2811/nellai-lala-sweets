@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Logo } from './Logo';
 import { SHOP_INFO } from '../data/initialData';
-import { MapPin, Phone, QrCode, Shield, Heart } from 'lucide-react';
+import { MapPin, Phone, QrCode, Heart, UtensilsCrossed } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
@@ -16,7 +16,7 @@ export const Footer: React.FC = () => {
           <div className="space-y-3">
             <Logo size="md" />
             <div className="font-tamil text-gold-300 font-bold text-base">
-              ஸ்ரீ முருகன் விலாஸ் - {SHOP_INFO.name_ta}
+              {SHOP_INFO.brand_ta} - {SHOP_INFO.name_ta}
             </div>
             <p className="text-xs text-stone-300 leading-relaxed font-serif">
               {SHOP_INFO.tagline_en}
@@ -44,7 +44,7 @@ export const Footer: React.FC = () => {
               <div className="flex items-start gap-2">
                 <Phone className="w-3.5 h-3.5 text-gold-400 mt-0.5 shrink-0" />
                 <div className="space-y-0.5">
-                  <div className="text-stone-400 text-[11px]">Phone Inquiries:</div>
+                  <div className="text-stone-400 text-[11px]">Direct Phone Inquiries:</div>
                   <div className="flex flex-wrap gap-2 text-white font-mono font-bold text-sm">
                     <a href={`tel:${SHOP_INFO.phone}`} className="hover:text-gold-300">
                       {SHOP_INFO.phone}
@@ -59,28 +59,22 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* QR Digital Menu & Admin Link */}
+          {/* Public QR Digital Menu Quick Info */}
           <div className="space-y-3">
             <h4 className="text-gold-400 font-serif font-bold text-sm tracking-wider uppercase flex items-center gap-1.5 border-b border-gold-500/30 pb-1.5">
               <QrCode className="w-4 h-4" />
-              QR Digital Menu
+              Public QR Digital Menu
             </h4>
             <p className="text-xs text-stone-300 leading-relaxed">
-              Scan our in-shop QR code from any smartphone to view today's fresh sweets, savories, and daily category pricing without waiting.
+              Scan our in-shop QR code with any smartphone camera to view today's complete 64-item sweets, savouries, and chips menu instantly without app or login.
             </p>
-            <div className="pt-2 flex flex-col gap-2">
+            <div className="pt-2">
               <Link
                 to="/menu"
-                className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-gold-500/20 hover:bg-gold-500/30 text-gold-300 border border-gold-500/40 text-xs font-semibold transition-all"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gold-500/20 hover:bg-gold-500/30 text-gold-300 border border-gold-500/40 text-xs font-semibold transition-all"
               >
-                Browse Menu Online →
-              </Link>
-              <Link
-                to="/admin"
-                className="inline-flex items-center gap-1.5 text-[11px] text-stone-400 hover:text-gold-400 transition-colors"
-              >
-                <Shield className="w-3 h-3 text-gold-500" />
-                <span>Shop Owner Login Portal</span>
+                <UtensilsCrossed className="w-3.5 h-3.5 text-gold-400" />
+                <span>Browse Full 64 Items Menu →</span>
               </Link>
             </div>
           </div>

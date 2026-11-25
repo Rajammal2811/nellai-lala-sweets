@@ -14,7 +14,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const category = categories.find(c => c.id === product.category_id);
 
-  // Dedicated un-misleading placeholder when real shop photo hasn't been uploaded yet
+  // Fallback placeholder image if network image fails
   const displayImage = !imageError && product.image_url 
     ? product.image_url 
     : '/product-placeholder.svg';
@@ -102,12 +102,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {/* Price Bar & Status */}
           <div className="pt-4 mt-3 border-t border-stone-100 flex items-center justify-between">
             <div>
-              <div className="text-[11px] text-stone-500 uppercase tracking-wider font-medium">
+              <div className="text-[10px] text-stone-400 uppercase tracking-wider font-semibold">
                 Price / விலை
               </div>
-              <div className="flex items-baseline gap-1 text-burgundy-900 font-extrabold">
-                <span className="text-xl sm:text-2xl font-mono">₹{product.price}</span>
-                <span className="text-xs text-stone-600 font-normal">/ {product.unit || '1 kg'}</span>
+              <div className="flex items-baseline gap-1 text-burgundy-900 font-extrabold mt-0.5">
+                {product.price !== null ? (
+                  <>
+                    <span className="text-xl sm:text-2xl font-mono">₹{product.price}</span>
+                    {product.unit && (
+                      <span className="text-xs text-stone-500 font-normal">/ {product.unit}</span>
+                    )}
+                  </>
+                ) : (
+                  <span className="text-xs sm:text-sm font-semibold text-gold-800 bg-gold-50 px-2.5 py-1 rounded-lg border border-gold-200">
+                    Price on request
+                  </span>
+                )}
               </div>
             </div>
 
@@ -195,8 +205,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <div className="flex items-center justify-between p-4 bg-burgundy-50 rounded-xl border border-burgundy-100">
                 <div>
                   <div className="text-xs text-stone-500 font-medium">விலை / Price</div>
-                  <div className="text-2xl font-bold font-mono text-burgundy-950">
-                    ₹{product.price} <span className="text-sm font-normal text-stone-600">/ {product.unit}</span>
+                  <div className="text-2xl font-bold font-mono text-burgundy-950 mt-0.5">
+                    {product.price !== null ? (
+                      <>
+                        ₹{product.price} {product.unit && <span className="text-sm font-normal text-stone-600">/ {product.unit}</span>}
+                      </>
+                    ) : (
+                      <span className="text-sm font-semibold text-gold-900 bg-gold-100 px-3 py-1 rounded-lg border border-gold-300">
+                        Price on request / கேட்டறியவும்
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className="text-right text-xs text-stone-500">
@@ -207,7 +225,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
               {/* Digital Menu Information Note */}
               <div className="text-[11px] text-center text-stone-500">
-                View-only digital QR menu • Direct in-shop purchase at Vedasandur.
+                Public QR Digital Menu • Direct in-shop purchase at Vedasandur.
               </div>
             </div>
           </div>
